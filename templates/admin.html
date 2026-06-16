@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Voting System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+        }
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+        }
+        .card {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background: white;
+            padding: 20px;
+        }
+        .btn {
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .form-control {
+            border-radius: 8px;
+            height: 45px;
+        }
+        .btn-primary { background: #007bff; border: none; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-success { background: #28a745; border: none; }
+        .btn-success:hover { background: #218838; }
+        .btn-info { background: #17a2b8; border: none; }
+        .btn-info:hover { background: #138496; }
+        .btn-danger { background: #dc3545; border: none; }
+        .btn-danger:hover { background: #c82333; }
+        .candidate-card {
+            width: 100%;
+            max-width: 250px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 15px;
+        }
+        .candidate-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <!-- Candidate Management -->
+        <div class="card">
+            <h4 class="text-center mb-3"><i class="fas fa-user-plus"></i> Manage Candidates</h4>
+            <form action="{{ url_for('add_candidate') }}" method="POST" enctype="multipart/form-data">
+                <input type="text" name="name" class="form-control mb-2" placeholder="Candidate Name" required>
+                <input type="file" name="image" class="form-control mb-2" accept="image/*" required>
+                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-plus"></i> Add Candidate</button>
+            </form>
+        </div>
+
+        <!-- Voter Management -->
+        <div class="card">
+            <h4 class="text-center mb-3"><i class="fas fa-users"></i> Manage Voters</h4>
+            <form action="{{ url_for('add_voter') }}" method="POST">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+                <input type="password" name="password" class="form-control mt-2" placeholder="Password" required>
+                <button type="submit" class="btn btn-success w-100 mt-2"><i class="fas fa-user-check"></i> Register Voter</button>
+            </form>
+        </div>
+
+        <!-- Results & Logout -->
+        <div class="card">
+            <h4 class="text-center mb-3"><i class="fas fa-chart-bar"></i> View Results</h4>
+            <div class="text-center">
+                <a href="{{ url_for('results') }}" class="btn btn-info w-100"><i class="fas fa-poll"></i> View Results</a>
+            </div>
+            <hr>
+            <h4 class="text-center mt-3"><i class="fas fa-sign-out-alt"></i> Logout</h4>
+            <div class="text-center">
+                <a href="{{ url_for('logout') }}" class="btn btn-danger w-100"><i class="fas fa-power-off"></i> Logout</a>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Candidate List -->
+    <div class="mt-4 text-center w-100">
+        <h2 class="text-white">Candidate List</h2>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            {% for candidate in candidates %}
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='uploads/' + candidate.image) }}" alt="{{ candidate.name }}" class="candidate-img">
+                <h5 class="mt-2">{{ candidate.name }}</h5>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

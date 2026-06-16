@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .result-card {
+            max-width: 450px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background: white;
+            text-align: center;
+        }
+        .winner {
+            background-color: #d4edda;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .draw {
+            background-color: #f8d7da;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .table-results {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .table-results th, .table-results td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .table-results th {
+            background-color: #f8f9fa;
+        }
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card result-card">
+        <h3 class="fw-bold">📊 Voting Results</h3>
+        <hr>
+
+        {% if candidates %}
+            {% set max_votes = candidates | max(attribute='votes') %}
+            {% set leading_candidates = candidates | selectattr('votes', 'equalto', max_votes.votes) | list %}
+
+            {% if leading_candidates|length > 1 %}
+                <div class="draw">
+                    ⚖️ <span>It's a draw!</span>
+                </div>
+            {% else %}
+                <div class="winner">
+                    🏆 <span>{{ leading_candidates[0].name }} won with {{ max_votes.votes }} votes!</span>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="draw">
+                ❗ <span>No votes yet.</span>
+            </div>
+        {% endif %}
+
+        <table class="table-results">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in candidates %}
+                    <tr>
+                        <td>{{ candidate.name }}</td>
+                        <td><strong>{{ candidate.votes }}</strong></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('logout') }}" class="btn btn-logout w-100">Logout</a>
+    </div>
+
+</body>
+</html>

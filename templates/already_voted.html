@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Already Voted{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card text-center shadow-lg p-4" style="width: 400px;">
+        <h2 class="text-danger">⚠ You Have Already Voted!</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <p class="mt-3">You have already cast your vote. You cannot vote again.</p>
+        <a href="{{ url_for('logout') }}" class="btn btn-primary mt-3">Logout</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vote</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Vote for Your Candidate</h2>
+        <form method="POST">
+            {% for candidate in candidates %}
+                <label>
+                    <input type="radio" name="candidate" value="{{ candidate.id }}" required> {{ candidate.name }}
+                </label><br>
+            {% endfor %}
+            <button type="submit">Submit Vote</button>
+        </form>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    </div>
+</body>
+</html>
